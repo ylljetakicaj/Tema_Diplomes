@@ -1,0 +1,84 @@
+</html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>CTF Assistant</title>
+    <link rel="stylesheet" href="static/css/assistant.css">
+</head>
+
+<body>
+    <div class="header">CTF Assistant</div>
+    <div id="chat-container" class="chat-container"></div>
+
+    <div class="input-container">
+        <textarea id="user-message" placeholder="Describe your CTF challenge..."></textarea>
+        <label for="file-upload" class="attach-button">
+            <i class="fas fa-paperclip"></i>
+        </label>
+        <input id="file-upload" type="file" name="files" style="display: none;" multiple>
+        <button class="hint-button" id="submit-button">Send</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const submitButton = document.getElementById("submit-button");
+            const userMessageInput = document.getElementById("user-message");
+            const fileInput = document.getElementById("file-upload");
+            const chatContainer = document.getElementById("chat-container");
+
+
+            function addMessage(content, sender) {
+                const messageElement = document.createElement("div");
+                messageElement.classList.add("message", sender);
+                messageElement.innerText = content;
+                chatContainer.prepend(messageElement);
+                return messageElement;
+            }
+
+            submitButton.addEventListener("click", async () => {
+                const userMessage = userMessageInput.value.trim();
+                const files = fileInput.files;
+
+
+                if (!userMessage && files.length === 0) return;
+
+
+                if (userMessage) {
+                    addMessage(userMessage, "user");
+                    userMessageInput.value = ""; // Clear input
+                }
+
+                if (files.length > 0) {
+                    const fileList = Array.from(files).map(file => file.name).join(", ");
+                    addMessage(`Attached files: ${fileList}`, "user");
+                }
+
+                const processingMessage = addMessage("Assistant is processing...", "bot");
+
+                const formData = new FormData();
+                formData.append("message", userMessage);
+                for (const file of files) {
+                    formData.append("files", file);
+                }
+
+                try {
+                    const response = await fetch("/chat", {
+                        method: "POST",
+                        body: formData,
+                    });
+                    const data = await response.json();
+
+                    processingMessage.innerText = data.response;
+                } catch (error) {
+                    processingMessage.innerText = "Error communicating with the server.";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

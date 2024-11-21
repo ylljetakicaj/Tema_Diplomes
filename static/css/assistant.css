@@ -1,0 +1,122 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: hsl(238, 100%, 12%);
+    color: white;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    text-align: center;
+    background-color: #1f1f38;
+    padding: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.chat-container {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    padding: 20px;
+    gap: 15px;
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 15px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.message.user {
+    background-color: #4CAF50;
+    color: white;
+    align-self: flex-end;
+}
+
+.message.bot {
+    background-color: #f0f8ff;
+    /* Soft Alice Blue color */
+    color: #333;
+    align-self: flex-start;
+    border-radius: 15px;
+    padding: 12px 18px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.message.bot:hover {
+    background-color: #e0f7fa;
+    /* Slightly darker shade on hover */
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background-color: #1f1f38;
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.3);
+}
+
+textarea {
+    flex: 1;
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    resize: none;
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+.attach-button {
+    margin-left: 10px;
+    color: #007BFF;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.attach-button:hover {
+    transform: scale(1.1);
+}
+
+.hint-button {
+    margin-left: 10px;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.hint-button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    .header {
+        font-size: 1.2rem;
+        padding: 8px;
+    }
+
+    .hint-button {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+
+    textarea {
+        font-size: 0.9rem;
+    }
+}
