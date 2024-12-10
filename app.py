@@ -73,12 +73,12 @@ def chat():
                 # Extract text from images
                 if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff')): 
                     extracted_text = extract_text_from_image(file_path)
-                    file_contexts.append(f"Extracted text from {filename}:\n{extracted_text}")
+                    file_contexts.append(f"File Name: {filename}\nExtracted Content:\n{extracted_text}")
 
                 # Handle text files
                 elif filename.lower().endswith(('.txt', '.md')):
                     with open(file_path, 'r') as f:
-                        file_contexts.append(f.read())
+                        file_contexts.append(f"File Name: {filename}\nContent:\n{f.read()}")
 
         # Combine context from challenges and files
         challenge_context = "\n".join(
@@ -89,16 +89,23 @@ def chat():
 
         # Build OpenAI prompt
         full_prompt = (
-            f"You are an expert in CTF challenges. Here are some details about challenges and user-provided files:\n\n"
-            f"{combined_context}\n\n"
-            "Provide hints, advice, or steps to solve the challenge:"
+            f"You are an expert in CTF challenges. A user has provided the following query:\n\n"
+            f"Query: {user_message}\n\n"
+            "Here are relevant challenges from the database:\n"
+            f"{challenge_context}\n\n"
+            "Here is additional context extracted from the uploaded files:\n"
+            f"{file_context}\n\n"
+            "Based on the above, please provide the following:\n"
+            "- Key hints or methodologies for solving the challenges.\n"
+            "- If applicable, a step-by-step solution.\n"
+            "- Advice on how to approach similar challenges in the future."
         )
 
         # Send to OpenAI
         response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[
-                {"role": "system", "content": "You are an expert in Capture the Flag (CTF) challenges."},
+                {"role": "system", "content": "You are an expert in Capture the Flag (CTF) challenges. Your job is to assist users by analyzing their queries, related challenges, and any uploaded files. Provide clear and structured hints, methodologies, or step-by-step solutions tailored to their needs. Be concise, relevant, and helpful."},
                 {"role": "user", "content": full_prompt}
             ],
             max_tokens=500,
