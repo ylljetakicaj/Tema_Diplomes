@@ -43,7 +43,6 @@ body {
 
 .message.bot {
     background-color: #f0f8ff;
-    /* Soft Alice Blue color */
     color: #333;
     align-self: flex-start;
     border-radius: 15px;
@@ -54,7 +53,6 @@ body {
 
 .message.bot:hover {
     background-color: #e0f7fa;
-    /* Slightly darker shade on hover */
 }
 
 .input-container {
